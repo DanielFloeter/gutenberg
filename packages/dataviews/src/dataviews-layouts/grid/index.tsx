@@ -60,7 +60,9 @@ interface GridItemProps< Item > {
 	regularFields: NormalizedField< Item >[];
 	badgeFields: NormalizedField< Item >[];
 	hasBulkActions: boolean;
-	sizes: string;
+	mediaAppearance: {
+		maxImageWidth: string;
+	};
 }
 
 function GridItem< Item >( {
@@ -79,7 +81,7 @@ function GridItem< Item >( {
 	regularFields,
 	badgeFields,
 	hasBulkActions,
-	sizes,
+	mediaAppearance,
 }: GridItemProps< Item > ) {
 	const { showTitle = true, showMedia = true, showDescription = true } = view;
 	const hasBulkAction = useHasAPossibleBulkAction( actions, item );
@@ -87,7 +89,11 @@ function GridItem< Item >( {
 	const instanceId = useInstanceId( GridItem );
 	const isSelected = selection.includes( id );
 	const renderedMediaField = mediaField?.render ? (
-		<mediaField.render item={ item } field={ mediaField } sizes={ sizes } />
+		<mediaField.render
+			item={ item }
+			field={ mediaField }
+			mediaAppearance={ mediaAppearance }
+		/>
 	) : null;
 	const renderedTitleField =
 		showTitle && titleField?.render ? (
