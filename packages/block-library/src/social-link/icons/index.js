@@ -29,7 +29,6 @@ export * from './patreon';
 export * from './pinterest';
 export * from './pocket';
 export * from './reddit';
-export * from './skype';
 export * from './snapchat';
 export * from './soundcloud';
 export * from './spotify';
