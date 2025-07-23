@@ -421,6 +421,28 @@ A list of numbers used to control the available item counts per page.
 
 It's optional. Defaults to `[10, 20, 50, 100]`.
 
+#### `empty`: `Object`
+
+The empty object configures what should be shown when the `data` is empty.
+
+Example:
+
+```js
+const empty = {
+	heading: 'No pages found',
+	description: 'Your search did not match any pages.',
+	illustration: 'https://example.com/illustration.svg',
+	actions: <Button>Create a new page</Button>,
+};
+```
+
+Properties:
+
+-   `heading`: short message describing the empty state. If this is the only property provided then the empty state will render as plain text without any additional styling.
+-   `description`: a longer description of the empty state, providing more context or instructions.
+-   `illustration`: either a URL to an image or a React component that renders an illustration. This should be purely illustrative as it does not render with any alt text.
+-   `actions`: a `<Button>` (or list of `<Button>`s rendered in a fragment) which provide the user with next steps.
+
 ### Composition modes
 
 The `DataViews` component supports two composition modes:
@@ -451,6 +473,7 @@ The following components are available directly under `DataViews`:
 -   `DataViews.Pagination`
 -   `DataViews.BulkActionToolbar`
 -   `DataViews.ViewConfig`
+-   `DataViews.Empty`
 
 #### example
 

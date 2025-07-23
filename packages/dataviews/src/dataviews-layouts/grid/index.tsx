@@ -38,6 +38,7 @@ import type {
 import type { SetSelection } from '../../private-types';
 import { ItemClickWrapper } from '../utils/item-click-wrapper';
 import { useUpdatedPreviewSizeOnViewportChange } from './preview-size-picker';
+import { DataViewsEmpty } from '../../components/dataviews-empty';
 const { Badge } = unlock( componentsPrivateApis );
 
 interface GridItemProps< Item > {
@@ -425,7 +426,7 @@ function ViewGrid< Item >( {
 							'dataviews-no-results': ! isLoading,
 						} ) }
 					>
-						<p>{ isLoading ? <Spinner /> : __( 'No results' ) }</p>
+						<p>{ isLoading ? <Spinner /> : <DataViewsEmpty /> }</p>
 					</div>
 				)
 			}

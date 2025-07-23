@@ -4,6 +4,11 @@
 import clsx from 'clsx';
 
 /**
+ * Internal dependencies
+ */
+import { DataViewsEmpty } from '../../components/dataviews-empty';
+
+/**
  * WordPress dependencies
  */
 import { useInstanceId, usePrevious } from '@wordpress/compose';
@@ -488,7 +493,7 @@ export default function ViewList< Item >( props: ViewListProps< Item > ) {
 				} ) }
 			>
 				{ ! hasData && (
-					<p>{ isLoading ? <Spinner /> : __( 'No results' ) }</p>
+					<p>{ isLoading ? <Spinner /> : <DataViewsEmpty /> }</p>
 				) }
 			</div>
 		);
