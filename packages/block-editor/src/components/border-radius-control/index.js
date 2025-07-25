@@ -68,6 +68,11 @@ export default function BorderRadiusControl( { onChange, values, presets } ) {
 		! hasDefinedValues( values ) || ! hasMixedValues( values )
 	);
 	const options = useBorderRadiusSizes( presets );
+	const [ availableUnits ] = useSettings( 'spacing.units' );
+	const units = useCustomUnits( {
+		availableUnits: availableUnits || [ 'px', 'em', 'rem' ],
+	} );
+
 	// Tracking selected units via internal state allows filtering of CSS unit
 	// only values from being saved while maintaining preexisting unit selection
 	// behaviour. Filtering CSS unit only values prevents invalid style values.
@@ -75,18 +80,13 @@ export default function BorderRadiusControl( { onChange, values, presets } ) {
 		flat:
 			typeof values === 'string'
 				? parseQuantityAndUnitFromRawValue( values )[ 1 ]
-				: undefined,
+				: units[ 0 ].value,
 		topLeft: parseQuantityAndUnitFromRawValue( values?.topLeft )[ 1 ],
 		topRight: parseQuantityAndUnitFromRawValue( values?.topRight )[ 1 ],
 		bottomLeft: parseQuantityAndUnitFromRawValue( values?.bottomLeft )[ 1 ],
 		bottomRight: parseQuantityAndUnitFromRawValue(
 			values?.bottomRight
 		)[ 1 ],
-	} );
-
-	const [ availableUnits ] = useSettings( 'spacing.units' );
-	const units = useCustomUnits( {
-		availableUnits: availableUnits || [ 'px', 'em', 'rem' ],
 	} );
 
 	const toggleLinked = () => setIsLinked( ! isLinked );
