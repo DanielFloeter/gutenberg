@@ -110,6 +110,77 @@ describe( 'Gallery block', () => {
 		} );
 	} );
 
+	describe( 'Link setting', () => {
+		const lightboxSettings = ( lightbox ) => ( {
+			__experimentalFeatures: {
+				blocks: { 'core/image': { lightbox } },
+			},
+		} );
+
+		async function getCheckedLinkOption() {
+			await selectBlock( 'Block: Gallery' );
+			await userEvent.click(
+				screen.getByRole( 'button', { name: 'Link' } )
+			);
+			return screen
+				.getAllByRole( 'menuitemradio' )
+				.find(
+					( item ) => item.getAttribute( 'aria-checked' ) === 'true'
+				);
+		}
+
+		test( 'defaults to "Enlarge on click" when the lightbox is enabled globally', async () => {
+			await setup(
+				createBlock( 'core/gallery', {}, [
+					createBlock( 'core/image', IMAGE_ATTRIBUTES ),
+				] ),
+				lightboxSettings( { enabled: true, allowEditing: true } )
+			);
+
+			expect( await getCheckedLinkOption() ).toHaveTextContent(
+				'Enlarge on click'
+			);
+		} );
+
+		test( 'defaults to "None" when the lightbox is not enabled globally', async () => {
+			await setup(
+				createBlock( 'core/gallery', {}, [
+					createBlock( 'core/image', IMAGE_ATTRIBUTES ),
+				] ),
+				lightboxSettings( { enabled: false, allowEditing: true } )
+			);
+
+			expect( await getCheckedLinkOption() ).toHaveTextContent( 'None' );
+		} );
+
+		test( 'defaults to "None" when the lightbox cannot be edited', async () => {
+			await setup(
+				createBlock( 'core/gallery', {}, [
+					createBlock( 'core/image', IMAGE_ATTRIBUTES ),
+				] ),
+				lightboxSettings( { enabled: true, allowEditing: false } )
+			);
+
+			expect( await getCheckedLinkOption() ).toHaveTextContent( 'None' );
+			expect(
+				screen.queryByRole( 'menuitemradio', {
+					name: /Enlarge on click/,
+				} )
+			).not.toBeInTheDocument();
+		} );
+
+		test( 'keeps a saved link setting', async () => {
+			await setup(
+				createBlock( 'core/gallery', { linkTo: 'none' }, [
+					createBlock( 'core/image', IMAGE_ATTRIBUTES ),
+				] ),
+				lightboxSettings( { enabled: true, allowEditing: true } )
+			);
+
+			expect( await getCheckedLinkOption() ).toHaveTextContent( 'None' );
+		} );
+	} );
+
 	describe( 'Layout', () => {
 		const createGallery = ( attributes = {} ) =>
 			createBlock( 'core/gallery', attributes, [

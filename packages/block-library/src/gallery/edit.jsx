@@ -429,7 +429,9 @@ export default function GalleryEdit( props ) {
 			...getHrefAndDestination(
 				image,
 				linkTo,
-				imageAttributes?.linkDestination
+				imageAttributes?.linkDestination,
+				imageAttributes,
+				lightboxSetting
 			),
 			...newLinkTarget,
 			className: newClassName,
@@ -739,11 +741,20 @@ export default function GalleryEdit( props ) {
 	useEffect( () => {
 		// linkTo attribute must be saved so blocks don't break when changing image_default_link_type in options.php.
 		if ( ! linkTo ) {
+			const defaultLink =
+				window?.wp?.media?.view?.settings?.defaultProps?.link ||
+				LINK_DESTINATION_NONE;
+			// With the lightbox enabled globally, images without a link open
+			// in the lightbox, so show that instead of "None".
+			const isLightboxDefault =
+				defaultLink === LINK_DESTINATION_NONE &&
+				lightboxSetting?.enabled &&
+				lightboxSetting?.allowEditing;
 			__unstableMarkNextChangeAsNotPersistent();
 			setAttributes( {
-				linkTo:
-					window?.wp?.media?.view?.settings?.defaultProps?.link ||
-					LINK_DESTINATION_NONE,
+				linkTo: isLightboxDefault
+					? LINK_DESTINATION_LIGHTBOX
+					: defaultLink,
 			} );
 		}
 	}, [ linkTo ] );

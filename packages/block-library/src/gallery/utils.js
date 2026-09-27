@@ -61,10 +61,16 @@ export function getHrefAndDestination(
 				linkDestination: IMAGE_LINK_DESTINATION_NONE,
 			};
 		case LINK_DESTINATION_NONE:
+			// With the lightbox enabled globally, an image without its own
+			// lightbox setting inherits it, so turn it off explicitly. When the
+			// lightbox can't be edited, the global setting is left in charge.
 			return {
 				href: undefined,
 				linkDestination: IMAGE_LINK_DESTINATION_NONE,
-				lightbox: undefined,
+				lightbox:
+					lightboxSetting?.enabled && lightboxSetting?.allowEditing
+						? { ...attributes?.lightbox, enabled: false }
+						: undefined,
 			};
 	}
 
